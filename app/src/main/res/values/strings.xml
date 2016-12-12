@@ -1,0 +1,31 @@
+<resources>
+    <string name="app_name">Marikina E I S</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="google_api_key">AIzaSyCyHDQI-HcAaPMY8jl9N8OBIxbGobB3cNY</string>
+
+    <string-array name="location">
+        <item>Around 1000 m</item>
+        <item>Around 2000 m</item>
+        <item>Around 3000 m</item>
+        <item>All</item>
+    </string-array>
+
+    <string-array name="date">
+        <item>Today</item>
+        <item>Last 24 Hours</item>
+        <item>Last 48 Hours</item>
+        <item>Last Week</item>
+    </string-array>
+
+    <string-array name="magnitude">
+        <item>1.0+</item>
+        <item>2.0+</item>
+        <item>3.0+</item>
+        <item>4.0+</item>
+        <item>5.0+</item>
+        <item>6.0+</item>
+        <item>7.0+</item>
+    </string-array>
+</resources>

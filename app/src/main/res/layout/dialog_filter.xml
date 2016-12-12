@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="16dp">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:text="Filter Quakes By:"
+        android:textAppearance="?android:textAppearanceLarge"
+        android:textColor="@color/colorTimeStamp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="4dp"
+        android:text="Location"
+        android:textStyle="bold" />
+
+    <Spinner
+        android:id="@+id/spinLocation"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:layout_marginLeft="16dp"
+
+        android:entries="@array/location" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="4dp"
+        android:text="Date"
+        android:textStyle="bold" />
+
+    <Spinner
+        android:id="@+id/spinDate"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:layout_marginLeft="16dp"
+
+        android:entries="@array/date" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="4dp"
+        android:text="Magnitude"
+        android:textStyle="bold" />
+
+    <Spinner
+        android:id="@+id/spinMagnitude"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:layout_marginLeft="16dp"
+
+        android:entries="@array/magnitude" />
+
+    <CheckBox
+        android:id="@+id/cbSavePref"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="And save as default filter"
+        android:textAppearance="?android:textAppearanceSmall"
+        android:textColor="@color/colorLocation" />
+
+
+</LinearLayout>
