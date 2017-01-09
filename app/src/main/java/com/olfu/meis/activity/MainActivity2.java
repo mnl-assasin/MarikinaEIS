@@ -20,7 +20,7 @@ import com.olfu.meis.sliding.SlidingTabLayout;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity2 extends AppCompatActivity {
 
     @Bind(R.id.navigationView)
     NavigationView navigationView;
@@ -44,7 +44,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_main2);
         ButterKnife.bind(this);
 
         setSupportActionBar(toolbar);
