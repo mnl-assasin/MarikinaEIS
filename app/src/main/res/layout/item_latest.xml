@@ -1,45 +1,155 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/layoutContainer"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="#fff"
     android:clickable="true"
-    android:orientation="vertical"
-    android:padding="8dp">
+    android:orientation="vertical">
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="8dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:id="@+id/tvMagnitude"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="5.0"
+                android:textAppearance="?android:textAppearanceMedium"
+                android:textColor="@color/colorMagnitude" />
+
+            <TextView
+                android:id="@+id/tvTimestamp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="bottom|right"
+                android:text="Today at 03:15 AM Oct 20, 2016"
+                android:textColor="@color/colorTimeStamp" />
+        </LinearLayout>
 
         <TextView
-            android:id="@+id/tvMagnitude"
+            android:id="@+id/tvLocation"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="5.0"
-            android:textAppearance="?android:textAppearanceMedium"
-            android:textColor="@color/colorMagnitude" />
+            android:text="Location"
+            android:textColor="@color/colorLocation" />
 
+        <!--Area of effect and distance -->
         <TextView
-            android:id="@+id/tvTimestamp"
-            android:layout_width="match_parent"
+            android:id="@+id/tvAOE"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:gravity="bottom|right"
-            android:text="Today at 03:15 AM Oct 20, 2016"
-            android:textColor="@color/colorTimeStamp" />
+            android:text="Depth: in Km Distance: 330Km"
+            android:textColor="@color/colorAOE" />
+
     </LinearLayout>
 
-    <TextView
-        android:id="@+id/tvLocation"
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Location"
-        android:textColor="@color/colorLocation" />
+        android:layout_marginTop="8dp"
+        android:background="@color/windowBackground"
+        android:orientation="vertical">
 
-    <!--Area of effect and distance -->
-    <TextView
-        android:id="@+id/tvAOE"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Depth: in Km Distance: 330Km"
-        android:textColor="@color/colorAOE" />
+        <!--<View-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="1dp"-->
+        <!--android:background="@color/dividerColor" />-->
+
+        <LinearLayout
+            android:id="@+id/layoutControls"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:clickable="true"
+            android:gravity="center"
+            android:visibility="gone">
+
+            <LinearLayout
+                android:id="@+id/layoutMap"
+                android:layout_width="60dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:background="@drawable/selector_controls_bg"
+                android:clickable="true"
+                android:gravity="center"
+                android:orientation="vertical"
+                android:padding="4dp">
+
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:adjustViewBounds="true"
+                    android:padding="4dp"
+                    android:src="@drawable/ic_map" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Map it"
+                    android:textSize="12sp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/layoutDetails"
+                android:layout_width="60dp"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="8dp"
+                android:layout_marginLeft="8dp"
+                android:layout_marginRight="8dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="4dp"
+                android:background="@drawable/selector_controls_bg"
+                android:clickable="true"
+                android:gravity="center"
+                android:orientation="vertical"
+                android:padding="4dp">
+
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:adjustViewBounds="true"
+                    android:padding="4dp"
+                    android:src="@drawable/ic_info" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Details"
+                    android:textSize="12sp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/layoutShare"
+                android:layout_width="60dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:background="@drawable/selector_controls_bg"
+                android:clickable="true"
+                android:gravity="center"
+                android:orientation="vertical"
+                android:padding="4dp">
+
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:adjustViewBounds="true"
+                    android:padding="4dp"
+                    android:src="@drawable/ic_share" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Share"
+                    android:textSize="12sp" />
+            </LinearLayout>
+        </LinearLayout>
+
+    </LinearLayout>
 </LinearLayout>

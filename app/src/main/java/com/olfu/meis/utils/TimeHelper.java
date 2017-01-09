@@ -1,5 +1,7 @@
 package com.olfu.meis.utils;
 
+import android.util.Log;
+
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -24,6 +26,7 @@ public class TimeHelper {
 
     public static boolean isToday(Calendar cal2) {
         Calendar current = Calendar.getInstance();
+        Log.d("Time", standardDateFormat(current));
 
         return current.get(Calendar.YEAR) == cal2.get(Calendar.YEAR) &&
                 current.get(Calendar.MONTH) == cal2.get(Calendar.MONTH) &&
@@ -51,9 +54,14 @@ public class TimeHelper {
 
 
     public static String standardDateFormat(Calendar calendar){
-        SimpleDateFormat sdf = new SimpleDateFormat("yy/MM 'at' HH:mm a");
+        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM 'at' HH:mm a");
         return sdf.format(calendar.getTime());
 
+    }
+
+    public static String dateWithGMT(Calendar calendar){
+        SimpleDateFormat sdf = new SimpleDateFormat("MMM/dd 'at' HH:mm a");
+        return sdf.format(calendar.getTime()) + " PHT";
     }
 
     public static Calendar setTime(String time) {

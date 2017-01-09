@@ -161,7 +161,7 @@ public class SlidingTabLayout extends HorizontalScrollView {
 //        textView.setTypeface(UtilsApp.opensansNormal());
         textView.setLayoutParams(new LinearLayout.LayoutParams(
                 ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
-        textView.setTextColor(getResources().getColor(R.color.textColorPrimary));
+        textView.setTextColor(getResources().getColor(R.color.lightPrimary));
         TypedValue outValue = new TypedValue();
         getContext().getTheme().resolveAttribute(android.R.attr.selectableItemBackground,
                 outValue, true);

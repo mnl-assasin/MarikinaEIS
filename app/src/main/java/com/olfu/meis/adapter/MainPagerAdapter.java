@@ -4,8 +4,8 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 
-import com.olfu.meis.fragment.FragmentMap;
 import com.olfu.meis.fragment.LatestFragment;
+import com.olfu.meis.fragment.MapFragment;
 import com.olfu.meis.fragment.PredictionFragment;
 import com.olfu.meis.fragment.StatsFragment;
 
@@ -28,10 +28,10 @@ public class MainPagerAdapter extends FragmentStatePagerAdapter {
         switch (position) {
             case 0:
                 return new LatestFragment();
-            case 1:
-                return new FragmentMap();
-//                return new MapFragment();
             case 2:
+//                return new FragmentMap();
+                return new MapFragment();
+            case 1:
                 return new PredictionFragment();
             case 3:
                 return new StatsFragment();

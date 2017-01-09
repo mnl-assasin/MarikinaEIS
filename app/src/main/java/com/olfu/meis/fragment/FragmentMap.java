@@ -23,6 +23,7 @@ import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.olfu.meis.R;
 import com.olfu.meis.model.EarthquakeItem;
+import com.olfu.meis.model.LocationItem;
 import com.olfu.meis.utils.TimeHelper;
 
 import java.io.IOException;
@@ -30,6 +31,8 @@ import java.util.ArrayList;
 import java.util.Calendar;
 
 import static com.olfu.meis.model.EarthquakeItem.getList;
+import static com.olfu.meis.model.LocationItem.latitude;
+import static com.olfu.meis.model.LocationItem.longitude;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -40,6 +43,7 @@ public class FragmentMap extends SupportMapFragment implements GoogleApiClient.C
         GoogleMap.OnMapLongClickListener,
         GoogleMap.OnMapClickListener,
         GoogleMap.OnMarkerClickListener {
+
 
     private GoogleApiClient mGoogleApiClient;
     private Location mCurrentLocation;
@@ -57,6 +61,7 @@ public class FragmentMap extends SupportMapFragment implements GoogleApiClient.C
 
         setHasOptionsMenu(true);
 
+
         mGoogleApiClient = new GoogleApiClient.Builder(getActivity())
                 .addConnectionCallbacks(this)
                 .addOnConnectionFailedListener(this)
@@ -69,14 +74,35 @@ public class FragmentMap extends SupportMapFragment implements GoogleApiClient.C
 //        Location myLocation = getMyLocation();
 
 //
-        CameraPosition position = CameraPosition.builder()
-                .target(new LatLng(14.646902, 121.120458))
-                .zoom(13f)
-                .bearing(0.0f)
-                .tilt(0.0f)
-                .build();
-        getMap().animateCamera(CameraUpdateFactory
-                .newCameraPosition(position), null);
+        if (latitude != 0 & longitude != 0) {
+//
+            double x = latitude;
+            double y = longitude;
+            CameraPosition position = CameraPosition.builder()
+                    .target(new LatLng(x, y))
+                    .zoom(15f)
+                    .bearing(0.0f)
+                    .tilt(0.0f)
+                    .build();
+            getMap().animateCamera(CameraUpdateFactory
+                    .newCameraPosition(position), null);
+
+            latitude = 0;
+            longitude = 0;
+        } else {
+            CameraPosition position = CameraPosition.builder()
+                    .target(new LatLng(14.646902, 121.120458))
+                    .zoom(13f)
+                    .bearing(0.0f)
+                    .tilt(0.0f)
+                    .build();
+            getMap().animateCamera(CameraUpdateFactory
+                    .newCameraPosition(position), null);
+
+        }
+        Log.d("ZXC", latitude + " : " + LocationItem.longitude);
+
+
         setupMarkers();
 
     }
@@ -98,10 +124,25 @@ public class FragmentMap extends SupportMapFragment implements GoogleApiClient.C
                     .icon(BitmapDescriptorFactory.fromBitmap(markerCreator(item.getMagnitude())))
             );
         }
+
+        if (latitude != 0 & LocationItem.longitude != 0) {
+//
+            CameraPosition position = CameraPosition.builder()
+                    .target(new LatLng(latitude, latitude))
+                    .zoom(15f)
+                    .bearing(0.0f)
+                    .tilt(0.0f)
+                    .build();
+            getMap().animateCamera(CameraUpdateFactory
+                    .newCameraPosition(position), null);
+
+            latitude = 0;
+            LocationItem.longitude = 0;
+        }
     }
 
     private Bitmap markerCreator(double magnitude) {
-        int size = (int) (magnitude + 20) * 8;
+        int size = (int) (magnitude + 25) * 8;
         BitmapDrawable bitmapdraw;
 
         if (magnitude <= 4.0)
