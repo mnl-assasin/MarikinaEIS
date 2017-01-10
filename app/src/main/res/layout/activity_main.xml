@@ -12,6 +12,10 @@
         android:layout_height="match_parent"
         android:orientation="vertical">
 
+        <include
+            android:id="@+id/toolbar"
+            layout="@layout/toolbar" />
+
         <FrameLayout
             android:id="@+id/fragmentLayout"
             android:layout_width="match_parent"
@@ -19,9 +23,6 @@
 
         </FrameLayout>
 
-        <include
-            android:id="@+id/toolbar"
-            layout="@layout/toolbar" />
 
     </LinearLayout>
 
@@ -30,7 +31,7 @@
         android:layout_width="200dp"
         android:layout_height="match_parent"
         android:layout_gravity="left"
-        android:background="@color/textColorPrimary"
+
         app:itemTextColor="#000"
         app:menu="@menu/drawer_menu" />
 </android.support.v4.widget.DrawerLayout>
