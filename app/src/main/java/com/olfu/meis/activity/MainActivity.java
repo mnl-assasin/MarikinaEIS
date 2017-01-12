@@ -1,6 +1,8 @@
 package com.olfu.meis.activity;
 
+import android.app.ProgressDialog;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
@@ -34,6 +36,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     @Bind(R.id.toolbar)
     Toolbar mToolbar;
 
+    ProgressDialog progressDialog;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -41,6 +45,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         ButterKnife.bind(this);
 
         initialized();
+//        testing();
     }
 
     private void initialized() {
@@ -64,7 +69,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private void setupNavigationView() {
 
         navigationView.setNavigationItemSelectedListener(this);
-
+        navigationView.setItemIconTintList(null);
         ActionBarDrawerToggle actionBarDrawerToggle = new ActionBarDrawerToggle(this, drawerLayout, mToolbar, R.string.app_name, R.string.app_name) {
             @Override
             public void onDrawerClosed(View drawerView) {
@@ -106,7 +111,12 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
 
         switch (item.getItemId()) {
+            case R.id.home:
+                break;
 
+            case R.id.mapit:
+                startActivity(new Intent(MainActivity.this, MapActivity.class));
+                break;
         }
 
 

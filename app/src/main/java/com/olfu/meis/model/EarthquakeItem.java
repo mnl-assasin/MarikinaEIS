@@ -84,4 +84,6 @@ public class EarthquakeItem {
         item.add(new EarthquakeItem(3.9, "24 Highland Street, Marikina, 1811 Metro Manila", 14.646102, 121.118667, "90 m", "12/17/2016 12:30", false));
         return item;
     }
+
+    public static ArrayList<EarthquakeItem> mapItemsm = new ArrayList<>();
 }

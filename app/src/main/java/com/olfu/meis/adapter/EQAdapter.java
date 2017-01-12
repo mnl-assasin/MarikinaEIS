@@ -2,7 +2,9 @@ package com.olfu.meis.adapter;
 
 import android.content.Context;
 import android.content.DialogInterface;
-import android.support.v7.app.AlertDialog;
+import android.content.Intent;
+import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,9 +13,9 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.olfu.meis.R;
-import com.olfu.meis.activity.MainActivity2;
+import com.olfu.meis.activity.MapActivity;
+import com.olfu.meis.builder.DialogBuilder;
 import com.olfu.meis.model.EarthquakeItem;
-import com.olfu.meis.model.LocationItem;
 import com.olfu.meis.utils.Distance;
 import com.olfu.meis.utils.TimeHelper;
 
@@ -68,6 +70,9 @@ public class EQAdapter extends BaseAdapter {
             holder = new ViewHolder(view);
             view.setTag(holder);
         }
+        Log.d("EQAdapter", "position: " + i);
+        if (i % 2 == 1)
+            holder.layoutContainer.setBackgroundColor(mContext.getResources().getColor(R.color.colorEQCell2));
 
         final EarthquakeItem item = items.get(i);
 
@@ -90,70 +95,94 @@ public class EQAdapter extends BaseAdapter {
         Calendar calEQ = TimeHelper.setTime(item.getTimeStamp());
         holder.tvTimestamp.setText(TimeHelper.getTimeStamp(calEQ));
 
-        if (item.isControlVisible())
-            holder.layoutControls.setVisibility(View.VISIBLE);
-        else
-            holder.layoutControls.setVisibility(View.GONE);
-
-        // onClick
         holder.layoutContainer.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (item.isControlVisible()) {
-                    holder.layoutControls.setVisibility(View.GONE);
-                    item.setControlVisible(false);
-                } else {
-                    holder.layoutControls.setVisibility(View.VISIBLE);
-                    item.setControlVisible(true);
-                }
-
-            }
-        });
-
-        holder.layoutMap.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                LocationItem.latitude = item.getLatitude();
-                LocationItem.longitude = item.getLongitude();
-                MainActivity2.pager.setCurrentItem(2);
-            }
-        });
-
-        holder.layoutDetails.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                /**
-                 * title: location
-                 * magnitude - Date;
-                 *
-                 * Description
-                 * Location: Lat long;
-                 * Depth:
-                 * Review Status: Reviewed
-                 * Source: Markina PDRRMO
-                 */
-
-                String title = item.getLocation() + "\nM" + item.getMagnitude() + TimeHelper.dateWithGMT(TimeHelper.setTime(item.getTimeStamp()));
-                String body = "Coordinates: " + item.getLatitude() + " \u00B0, " + item.getLongitude() + "\u00B0" + "\n" +
-                        "Location: " + item.getDepth()
-                        + "\nReview Status: Reviewed\nSource: Marikina PDRRMO";
-
-                AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
-                builder.setTitle(title).setMessage(body).setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                DialogBuilder.dialogBuilder(mContext, "Select Action", "Map it!", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
-                        dialogInterface.dismiss();
+                        Bundle bundle = new Bundle();
+                        bundle.putDouble("latitude", item.getLatitude());
+                        bundle.putDouble("longitude", item.getLongitude());
+
+
+                        Intent intent = new Intent(mContext, MapActivity.class);
+                        intent.putExtras(bundle);
+                        mContext.startActivity(intent);
                     }
-                }).show();
+                }, "Details", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        String title = item.getLocation() + "\nM" + item.getMagnitude() + TimeHelper.dateWithGMT(TimeHelper.setTime(item.getTimeStamp()));
+                        String body = "Coordinates: " + item.getLatitude() + " \u00B0, " + item.getLongitude() + "\u00B0" + "\n" +
+                                "Location: " + item.getDepth()
+                                + "\nReview Status: Reviewed\nSource: Marikina PDRRMO";
+
+                        DialogBuilder.dialogBuilder(mContext, title, body);
+                    }
+                });
             }
         });
 
-        holder.layoutShare.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
-            }
-        });
+        // onClick
+//        holder.layoutContainer.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                if (item.isControlVisible()) {
+//                    holder.layoutControls.setVisibility(View.GONE);
+//                    item.setControlVisible(false);
+//                } else {
+//                    holder.layoutControls.setVisibility(View.VISIBLE);
+//                    item.setControlVisible(true);
+//                }
+//
+//            }
+//        });
+//
+//        holder.layoutMap.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                LocationItem.latitude = item.getLatitude();
+//                LocationItem.longitude = item.getLongitude();
+//                MainActivity2.pager.setCurrentItem(2);
+//            }
+//        });
+//
+//        holder.layoutDetails.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                /**
+//                 * title: location
+//                 * magnitude - Date;
+//                 *
+//                 * Description
+//                 * Location: Lat long;
+//                 * Depth:
+//                 * Review Status: Reviewed
+//                 * Source: Markina PDRRMO
+//                 */
+//
+//                String title = item.getLocation() + "\nM" + item.getMagnitude() + TimeHelper.dateWithGMT(TimeHelper.setTime(item.getTimeStamp()));
+//                String body = "Coordinates: " + item.getLatitude() + " \u00B0, " + item.getLongitude() + "\u00B0" + "\n" +
+//                        "Location: " + item.getDepth()
+//                        + "\nReview Status: Reviewed\nSource: Marikina PDRRMO";
+//
+//                AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
+//                builder.setTitle(title).setMessage(body).setPositiveButton("OK", new DialogInterface.OnClickListener() {
+//                    @Override
+//                    public void onClick(DialogInterface dialogInterface, int i) {
+//                        dialogInterface.dismiss();
+//                    }
+//                }).show();
+//            }
+//        });
+//
+//        holder.layoutShare.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//
+//            }
+//        });
 
 
         return view;
@@ -171,13 +200,6 @@ public class EQAdapter extends BaseAdapter {
         @Bind(R.id.tvAOE)
         TextView tvAOE;
 
-        @Bind(R.id.layoutMap)
-        LinearLayout layoutMap;
-        @Bind(R.id.layoutDetails)
-        LinearLayout layoutDetails;
-        @Bind(R.id.layoutShare)
-        LinearLayout layoutShare;
-        @Bind(R.id.layoutControls)
         LinearLayout layoutControls;
         @Bind(R.id.layoutContainer)
         LinearLayout layoutContainer;

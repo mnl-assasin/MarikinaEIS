@@ -1,6 +1,7 @@
 package com.olfu.meis.fragment;
 
 
+import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -17,15 +18,24 @@ import android.widget.Spinner;
 
 import com.olfu.meis.R;
 import com.olfu.meis.adapter.EQAdapter;
+import com.olfu.meis.api.ApiClient;
+import com.olfu.meis.api.ApiInterface;
+import com.olfu.meis.api.EarthquakeModel;
 import com.olfu.meis.model.EarthquakeItem;
 import com.olfu.meis.utils.Distance;
+import com.olfu.meis.utils.TimeHelper;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 import static com.olfu.meis.model.EarthquakeItem.getList;
+import static com.olfu.meis.model.EarthquakeItem.mapItemsm;
 
 
 /**
@@ -75,9 +85,53 @@ public class LatestFragment extends Fragment {
     }
 
     private void initEQ() {
+        final ProgressDialog progressDialog = new ProgressDialog(this.getActivity());
+        progressDialog.setMessage("downloading...");
+        progressDialog.show();
 
-        items = getList();
+        ApiInterface api = ApiClient.getClient().create(ApiInterface.class);
+        Call<List<EarthquakeModel>> call = api.getReports();
+        call.enqueue(new Callback<List<EarthquakeModel>>() {
+            @Override
+            public void onResponse(Call<List<EarthquakeModel>> call, Response<List<EarthquakeModel>> response) {
+                List<EarthquakeModel> list = response.body();
+                progressDialog.dismiss();
+                populate(list);
+            }
+
+
+            @Override
+            public void onFailure(Call<List<EarthquakeModel>> call, Throwable t) {
+
+            }
+        });
+
+//        items = getList();
+//        tempItems = items;
+//        adapter = new EQAdapter(tempItems, this.getActivity());
+//        lvEQ.setAdapter(adapter);
+
+    }
+
+    private void populate(List<EarthquakeModel> list) {
+        items = new ArrayList<>();
+        for (int ctr = 0; ctr < list.size(); ctr++) {
+            Log.d("TIME", TimeHelper.convertDate(list.get(ctr).getDateTime()));
+            EarthquakeModel eq = list.get(ctr);
+            double magnitude = eq.getMagnitude();
+            String location = eq.getAddress();
+            double latitude = eq.getLatitude();
+            double longitude = eq.getLongitude();
+            String depth = String.valueOf(eq.getDepth());
+            String timeStamp = TimeHelper.convertDate(list.get(ctr).getDateTime());
+            boolean isControlVisible = false;
+            items.add(new EarthquakeItem(magnitude, location, latitude, longitude, depth, timeStamp, isControlVisible));
+
+        }
+
         tempItems = items;
+        mapItemsm = tempItems;
+
         adapter = new EQAdapter(tempItems, this.getActivity());
         lvEQ.setAdapter(adapter);
 

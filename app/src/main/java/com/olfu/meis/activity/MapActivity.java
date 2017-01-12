@@ -1,21 +1,19 @@
-package com.olfu.meis.fragment;
-
+package com.olfu.meis.activity;
 
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.location.Geocoder;
 import android.location.Location;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
-import android.view.View;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
-import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.MapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
@@ -30,15 +28,12 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Calendar;
 
-import static com.olfu.meis.model.EarthquakeItem.getList;
+import butterknife.ButterKnife;
+
+import static com.olfu.meis.model.EarthquakeItem.mapItemsm;
 import static com.olfu.meis.model.LocationItem.latitude;
-import static com.olfu.meis.model.LocationItem.longitude;
 
-/**
- * A simple {@link Fragment} subclass.
- */
-public class FragmentMap extends SupportMapFragment
-
+public class MapActivity extends AppCompatActivity
 
         implements GoogleApiClient.ConnectionCallbacks,
         GoogleApiClient.OnConnectionFailedListener,
@@ -46,7 +41,6 @@ public class FragmentMap extends SupportMapFragment
         GoogleMap.OnMapLongClickListener,
         GoogleMap.OnMapClickListener,
         GoogleMap.OnMarkerClickListener {
-
 
     private GoogleApiClient mGoogleApiClient;
     private Location mCurrentLocation;
@@ -58,40 +52,61 @@ public class FragmentMap extends SupportMapFragment
             GoogleMap.MAP_TYPE_NONE};
     private final int CURRENT_MAP_TYPE = 0;
 
+    GoogleMap map;
+
+//    @Bind(R.id.toolbar)
+//    Toolbar mToolbar;
+
     @Override
-    public void onViewCreated(View view, Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_map);
+        ButterKnife.bind(this);
 
-        setHasOptionsMenu(true);
 
+        createWidgets();
+        initData();
+        initMarkers();
 
-        mGoogleApiClient = new GoogleApiClient.Builder(getActivity())
+    }
+
+    private void createWidgets() {
+
+//        setSupportActionBar(mToolbar);
+//        getSupportActionBar().setDisplayShowHomeEnabled(true);
+//        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+//        getSupportActionBar().setHomeButtonEnabled(true);
+        map = ((MapFragment) getFragmentManager().findFragmentById(R.id.map))
+                .getMap();
+
+        map.setMyLocationEnabled(true);
+        mGoogleApiClient = new GoogleApiClient.Builder(getApplicationContext())
                 .addConnectionCallbacks(this)
                 .addOnConnectionFailedListener(this)
                 .addApi(LocationServices.API)
                 .build();
 
+
+    }
+
+    private void initData() {
+
         initListeners();
+        Bundle b = getIntent().getExtras();
+        if (b != null) {
+            double lat = b.getDouble("latitude");
+            double lon = b.getDouble("longitude");
+            Log.d("MapActiity", lat + " : " + lon);
 
-        getMap().setMyLocationEnabled(true);
-//        Location myLocation = getMyLocation();
-
-//
-        if (latitude != 0 & longitude != 0) {
-//
-            double x = latitude;
-            double y = longitude;
             CameraPosition position = CameraPosition.builder()
-                    .target(new LatLng(x, y))
+                    .target(new LatLng(lat, lon))
                     .zoom(15f)
                     .bearing(0.0f)
                     .tilt(0.0f)
                     .build();
-            getMap().animateCamera(CameraUpdateFactory
+            map.animateCamera(CameraUpdateFactory
                     .newCameraPosition(position), null);
 
-            latitude = 0;
-            longitude = 0;
         } else {
             CameraPosition position = CameraPosition.builder()
                     .target(new LatLng(14.646902, 121.120458))
@@ -99,19 +114,20 @@ public class FragmentMap extends SupportMapFragment
                     .bearing(0.0f)
                     .tilt(0.0f)
                     .build();
-            getMap().animateCamera(CameraUpdateFactory
+            map.animateCamera(CameraUpdateFactory
                     .newCameraPosition(position), null);
-
         }
-        Log.d("ZXC", latitude + " : " + LocationItem.longitude);
-
-
-        setupMarkers();
-
     }
 
-    private void setupMarkers() {
-        ArrayList<EarthquakeItem> items = getList();
+    private void initListeners() {
+        map.setOnMarkerClickListener(this);
+        map.setOnMapLongClickListener(this);
+        map.setOnInfoWindowClickListener(this);
+        map.setOnMapClickListener(this);
+    }
+
+    private void initMarkers() {
+        ArrayList<EarthquakeItem> items = mapItemsm;
 
         for (int ctr = 0; ctr < items.size(); ctr++) {
             EarthquakeItem item = items.get(ctr);
@@ -120,7 +136,7 @@ public class FragmentMap extends SupportMapFragment
             Calendar calEQ = TimeHelper.setTime(item.getTimeStamp());
             String snippet = "M" + item.getMagnitude() + " - " + TimeHelper.getTimeStamp(calEQ);
 
-            getMap().addMarker(new MarkerOptions()
+            map.addMarker(new MarkerOptions()
                     .position(position)
                     .title(item.getLocation())
                     .snippet(snippet)
@@ -136,7 +152,7 @@ public class FragmentMap extends SupportMapFragment
                     .bearing(0.0f)
                     .tilt(0.0f)
                     .build();
-            getMap().animateCamera(CameraUpdateFactory
+            map.animateCamera(CameraUpdateFactory
                     .newCameraPosition(position), null);
 
             latitude = 0;
@@ -159,16 +175,6 @@ public class FragmentMap extends SupportMapFragment
 
     }
 
-    ;
-
-
-    private void initListeners() {
-        getMap().setOnMarkerClickListener(this);
-        getMap().setOnMapLongClickListener(this);
-        getMap().setOnInfoWindowClickListener(this);
-        getMap().setOnMapClickListener(this);
-    }
-
 
     @Override
     public void onConnected(Bundle bundle) {
@@ -189,13 +195,13 @@ public class FragmentMap extends SupportMapFragment
                 .tilt(0.0f)
                 .build();
 
-        getMap().animateCamera(CameraUpdateFactory
+        map.animateCamera(CameraUpdateFactory
                 .newCameraPosition(position), null);
 
-        getMap().setMapType(MAP_TYPES[CURRENT_MAP_TYPE]);
-        getMap().setTrafficEnabled(false);
+        map.setMapType(MAP_TYPES[CURRENT_MAP_TYPE]);
+        map.setTrafficEnabled(false);
 
-        getMap().getUiSettings().setZoomControlsEnabled(true);
+        map.getUiSettings().setZoomControlsEnabled(true);
 
     }
 
@@ -220,7 +226,7 @@ public class FragmentMap extends SupportMapFragment
 //        options.title(getAddressFromLatLng(latLng));
 //
 //        options.icon(BitmapDescriptorFactory.defaultMarker());
-//        getMap().addMarker(options);
+//        map.addMarker(options);
     }
 
     @Override
@@ -232,11 +238,11 @@ public class FragmentMap extends SupportMapFragment
 //                BitmapFactory.decodeResource(getResources(),
 //                        R.mipmap.ic_launcher)));
 //
-//        getMap().addMarker(options);
+//        map.addMarker(options);
     }
 
     private String getAddressFromLatLng(LatLng latLng) {
-        Geocoder geocoder = new Geocoder(getActivity());
+        Geocoder geocoder = new Geocoder(getApplicationContext());
 
         String address = "";
         try {

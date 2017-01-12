@@ -12,8 +12,9 @@ import com.olfu.meis.R;
  */
 public class DialogBuilder {
 
-    public static void dialogBuilder(final Context ctx, String message) {
+    public static void dialogBuilder(final Context ctx, String title, String message) {
         AlertDialog.Builder builder = new AlertDialog.Builder(ctx);
+        builder.setTitle(title);
         builder.setMessage(message);
         builder.setPositiveButton(ctx.getString(R.string.ok), new DialogInterface.OnClickListener() {
             @Override
