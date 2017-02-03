@@ -12,8 +12,8 @@ import retrofit2.http.GET;
 public interface ApiInterface {
 
     @GET("reports")
-    Call<List<EarthquakeModel>> getReports();
+    Call<List<EarthquakeResponse>> getReports();
 
     @GET("forecasts")
-    Call<List<EarthquakeModel>> getForecast();
+    Call<List<EarthquakeResponse>> getForecast();
 }

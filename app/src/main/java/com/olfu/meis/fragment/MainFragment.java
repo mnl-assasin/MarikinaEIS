@@ -22,7 +22,7 @@ public class MainFragment extends Fragment {
 
 
     MainPagerAdapter adapter;
-    CharSequence titles[] = {"Latest" , "Forecast", "Stats"};
+    CharSequence titles[] = {"Latest" , "Forecast", "Aftershock"};
     @Bind(R.id.tabs)
     SlidingTabLayout tabs;
     @Bind(R.id.pager)

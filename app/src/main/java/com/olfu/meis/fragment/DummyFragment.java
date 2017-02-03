@@ -1,7 +1,6 @@
 package com.olfu.meis.fragment;
 
 
-import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -17,15 +16,15 @@ import android.widget.ListView;
 import android.widget.Spinner;
 
 import com.olfu.meis.R;
-import com.olfu.meis.adapter.EQAdapter2;
+import com.olfu.meis.adapter.EQAdapter;
 import com.olfu.meis.api.ApiClient;
 import com.olfu.meis.api.ApiInterface;
 import com.olfu.meis.api.EarthquakeResponse;
-import com.olfu.meis.model.EarthquakeItem2;
+import com.olfu.meis.model.EQItem;
 import com.olfu.meis.utils.Distance;
-import com.olfu.meis.utils.TimeHelper2;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import butterknife.Bind;
@@ -34,36 +33,34 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-import static com.olfu.meis.model.EarthquakeItem2.getList;
-import static com.olfu.meis.model.EarthquakeItem2.mapItemsm;
-
-
+import static com.olfu.meis.model.EQItem.latestMapItem;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class LatestFragment extends Fragment {
+public class DummyFragment extends Fragment {
+
+    public static String TAG = "Dummy";
 
     @Bind(R.id.lvEQ)
     ListView lvEQ;
 
-
-    ArrayList<EarthquakeItem2> items;
-    ArrayList<EarthquakeItem2> tempItems;
-    EQAdapter2 adapter;
-
-    public LatestFragment() {
+    public DummyFragment() {
         // Required empty public constructor
     }
 
+    EQAdapter adapter;
+    ArrayList<EQItem> item;
+    ArrayList<EQItem> latestItem;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View v = inflater.inflate(R.layout.fragment_latest, container, false);
+        View v = inflater.inflate(R.layout.fragment_dummy, container, false);
         ButterKnife.bind(this, v);
-        setHasOptionsMenu(true);
         initEQ();
+        requestEQ();
+        setHasOptionsMenu(true);
         return v;
     }
 
@@ -85,9 +82,15 @@ public class LatestFragment extends Fragment {
     }
 
     private void initEQ() {
-        final ProgressDialog progressDialog = new ProgressDialog(this.getActivity());
-        progressDialog.setMessage("downloading...");
-        progressDialog.show();
+
+        item = new ArrayList<>();
+        latestItem = new ArrayList<>();
+        adapter = new EQAdapter(latestItem, this.getActivity());
+        lvEQ.setAdapter(adapter);
+
+    }
+
+    private void requestEQ() {
 
         ApiInterface api = ApiClient.getClient().create(ApiInterface.class);
         Call<List<EarthquakeResponse>> call = api.getReports();
@@ -95,10 +98,8 @@ public class LatestFragment extends Fragment {
             @Override
             public void onResponse(Call<List<EarthquakeResponse>> call, Response<List<EarthquakeResponse>> response) {
                 List<EarthquakeResponse> list = response.body();
-                progressDialog.dismiss();
-                populate(list);
+                populateList(list);
             }
-
 
             @Override
             public void onFailure(Call<List<EarthquakeResponse>> call, Throwable t) {
@@ -106,37 +107,42 @@ public class LatestFragment extends Fragment {
             }
         });
 
-//        items = getList();
-//        tempItems = items;
-//        adapter = new EQAdapter2(tempItems, this.getActivity());
-//        lvEQ.setAdapter(adapter);
-
     }
 
-    private void populate(List<EarthquakeResponse> list) {
-        items = new ArrayList<>();
+    private void populateList(List<EarthquakeResponse> list) {
         for (int ctr = 0; ctr < list.size(); ctr++) {
-            Log.d("TIME", TimeHelper2.convertDate(list.get(ctr).getDateTime()));
+
             EarthquakeResponse eq = list.get(ctr);
             double magnitude = eq.getMagnitude();
             String location = eq.getAddress();
             double latitude = eq.getLatitude();
             double longitude = eq.getLongitude();
             String depth = String.valueOf(eq.getDepth());
-            String timeStamp = TimeHelper2.convertDate(list.get(ctr).getDateTime());
-            boolean isControlVisible = false;
-            items.add(0, new EarthquakeItem2(magnitude, location, latitude, longitude, depth, timeStamp, isControlVisible));
+            String timeStamp = eq.getDateTime();
+
+            item.add(new EQItem(magnitude, location, latitude, longitude, depth, timeStamp));
 
         }
 
-        tempItems = items;
-        mapItemsm = tempItems;
+        Collections.sort(item);
+        for (int ctr = 0; ctr < item.size(); ctr++) {
+            Log.d(TAG, item.get(ctr).getTimeStamp());
+        }
 
-        adapter = new EQAdapter2(tempItems, this.getActivity());
+        latestItem = item;
+        latestMapItem = item;
+
+        adapter = new EQAdapter(latestItem, this.getActivity());
         lvEQ.setAdapter(adapter);
+        Log.d(TAG, "Adapter notify data set changed");
 
     }
 
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        ButterKnife.unbind(this);
+    }
 
     private void showFilterDialog() {
 
@@ -172,8 +178,8 @@ public class LatestFragment extends Fragment {
 
     private void populateList(int location, int date, int magnitude) {
 
-        Log.d("HELLO WORLD", location + " : " + date + " : " + magnitude);
-        tempItems.clear();
+        Log.d(TAG, location + " : " + date + " : " + magnitude);
+//        latestItem.clear();
         double locParam = 99999;
         double magParam = 0.0;
         switch (location) {
@@ -218,25 +224,57 @@ public class LatestFragment extends Fragment {
 
         double lat = 14.647680;
         double lon = 121.116714;
-        items = getList();
-        Log.d("HW", locParam + " : " + magParam);
 
-        for (int ctr = 0; ctr < items.size(); ctr++) {
-            EarthquakeItem2 item = items.get(ctr);
+//        items = getList();
+        Log.d(TAG, locParam + " : " + magParam);
 
-            double distance = Distance.distanceInMeters(lat, lon, item.getLatitude(), item.getLongitude());
-            Log.d("HW", "Distance: " + distance + " / Magnitude:" + magnitude);
-            if (distance < locParam && item.getMagnitude() > magParam)
-                tempItems.add(item);
+        latestItem = new ArrayList<>();
+        Log.d(TAG, "ITEM SIZE: " + item.size());
+        for (int ctr = 0; ctr < item.size(); ctr++) {
+            EQItem eqItem = item.get(ctr);
+
+            double distance = Distance.distanceInMeters(lat, lon, eqItem.getLatitude(), eqItem.getLongitude());
+            Log.d(TAG, "Distance: " + distance + " / Magnitude:" + magParam + " EQ Magnitude: " + eqItem.getMagnitude());
+
+            if (distance > locParam && eqItem.getMagnitude() > magParam) {
+                Log.d(TAG, "Earthquake added");
+                latestItem.add(eqItem);
+            }
+
         }
 
-        adapter.notifyDataSetChanged();
+        Collections.sort(latestItem);
+        adapter = new EQAdapter(latestItem, this.getActivity());
+        lvEQ.setAdapter(adapter);
+//
+//            double distance = Distance.distanceInMeters(lat, lon, eqItem.getLatitude(), eqItem.getLongitude());
+//            Log.d("HW", "Distance: " + distance + " / Magnitude:" + magnitude);
+//            if (distance < locParam && eqItem.getMagnitude() > magParam)
+//                latestItem.add(eqItem);
+//        }
+//        Collections.sort(item);
+//        adapter.notifyDataSetChanged();
 
     }
 
-    @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-        ButterKnife.unbind(this);
-    }
+
+//    public String loanJSON() {
+//        String json = null;
+//
+//        try {
+//
+//            InputStream is = getActivity().getAssets().open("dummy.json");
+//            int size = is.available();
+//            byte[] buffer = new byte[size];
+//            is.read(buffer);
+//            is.close();
+//            json = new String(buffer, "UTF-8");
+//
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//            return null;
+//        }
+//        return json;
+//    }
+
 }

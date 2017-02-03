@@ -1,0 +1,98 @@
+[
+  {
+    "id": "13",
+    "latitude": "14.654426774737",
+    "longitude": "121.098097264767",
+    "address": "Kalabasa St, Marikina, Metro Manila, Philippines",
+    "date_time": "2013-10-24 11:04:00",
+    "magnitude": "1.10",
+    "intensity": "10.20",
+    "depth": "13.000000",
+    "created_at": null,
+    "updated_at": null
+  },
+  {
+    "id": "20",
+    "latitude": "14.648198794617",
+    "longitude": "121.102298945189",
+    "address": "6-106 E Rodriguez Ave, Marikina, Metro Manila",
+    "date_time": "2016-02-13 08:53:00",
+    "magnitude": "3.60",
+    "intensity": "2.50",
+    "depth": "2.600000",
+    "created_at": null,
+    "updated_at": null
+  },
+  {
+    "id": "18",
+    "latitude": "14.630676461585",
+    "longitude": "121.089428365231",
+    "address": "48 St Mary Ave, Marikina",
+    "date_time": "2016-02-26 19:36:00",
+    "magnitude": "3.00",
+    "intensity": "2.80",
+    "depth": "4.300000",
+    "created_at": null,
+    "updated_at": null
+  },
+  {
+    "id": "16",
+    "latitude": "14.643465411377",
+    "longitude": "121.105993688107",
+    "address": "24 5th St, Marikina, Metro Manila, Philippines",
+    "date_time": "2016-03-01 12:46:00",
+    "magnitude": "4.30",
+    "intensity": "2.50",
+    "depth": "3.600000",
+    "created_at": null,
+    "updated_at": null
+  },
+  {
+    "id": "19",
+    "latitude": "14.651603445680",
+    "longitude": "121.121010035276",
+    "address": "42 Champaca St, Marikina, 1810 Metro Manila",
+    "date_time": "2016-05-16 03:26:00",
+    "magnitude": "1.80",
+    "intensity": "2.30",
+    "depth": "5.600000",
+    "created_at": null,
+    "updated_at": null
+  },
+  {
+    "id": "15",
+    "latitude": "14.660031805494",
+    "longitude": "121.111566647887",
+    "address": "61 Lakandula, Marikina, Metro Manila, Philippines",
+    "date_time": "2016-08-16 16:34:00",
+    "magnitude": "2.30",
+    "intensity": "1.50",
+    "depth": "8.150000",
+    "created_at": null,
+    "updated_at": null
+  },
+  {
+    "id": "21",
+    "latitude": "14.640351287731",
+    "longitude": "121.115622147918",
+    "address": "27 Bronze St, Marikina, Metro Manila, Philippines",
+    "date_time": "2016-12-13 06:49:00",
+    "magnitude": "2.90",
+    "intensity": "1.80",
+    "depth": "1.800000",
+    "created_at": null,
+    "updated_at": null
+  },
+  {
+    "id": "28",
+    "latitude": "14.646205803603",
+    "longitude": "121.102903783321",
+    "address": "70 Cepeda St, Marikina, 1807 Metro Manila, Philippines",
+    "date_time": "2016-12-29 21:55:00",
+    "magnitude": "3.90",
+    "intensity": "4.00",
+    "depth": "4.000000",
+    "created_at": null,
+    "updated_at": null
+  }
+]

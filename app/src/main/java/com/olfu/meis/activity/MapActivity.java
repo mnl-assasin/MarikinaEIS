@@ -20,9 +20,9 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.olfu.meis.R;
-import com.olfu.meis.model.EarthquakeItem;
+import com.olfu.meis.model.EQItem;
 import com.olfu.meis.model.LocationItem;
-import com.olfu.meis.utils.TimeHelper;
+import com.olfu.meis.utils.TimeHelper2;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -30,7 +30,8 @@ import java.util.Calendar;
 
 import butterknife.ButterKnife;
 
-import static com.olfu.meis.model.EarthquakeItem.mapItemsm;
+import static com.olfu.meis.model.EQItem.forecastMapItem;
+import static com.olfu.meis.model.EQItem.latestMapItem;
 import static com.olfu.meis.model.LocationItem.latitude;
 
 public class MapActivity extends AppCompatActivity
@@ -50,9 +51,11 @@ public class MapActivity extends AppCompatActivity
             GoogleMap.MAP_TYPE_HYBRID,
             GoogleMap.MAP_TYPE_TERRAIN,
             GoogleMap.MAP_TYPE_NONE};
-    private final int CURRENT_MAP_TYPE = 0;
+    private final int CURRENT_MAP_TYPE = 2;
 
     GoogleMap map;
+    double x = 0;
+    double y = 0;
 
 //    @Bind(R.id.toolbar)
 //    Toolbar mToolbar;
@@ -63,19 +66,13 @@ public class MapActivity extends AppCompatActivity
         setContentView(R.layout.activity_map);
         ButterKnife.bind(this);
 
-
         createWidgets();
         initData();
         initMarkers();
-
     }
 
     private void createWidgets() {
 
-//        setSupportActionBar(mToolbar);
-//        getSupportActionBar().setDisplayShowHomeEnabled(true);
-//        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-//        getSupportActionBar().setHomeButtonEnabled(true);
         map = ((MapFragment) getFragmentManager().findFragmentById(R.id.map))
                 .getMap();
 
@@ -85,6 +82,8 @@ public class MapActivity extends AppCompatActivity
                 .addOnConnectionFailedListener(this)
                 .addApi(LocationServices.API)
                 .build();
+
+        map.setMapType(MAP_TYPES[CURRENT_MAP_TYPE]);
 
 
     }
@@ -96,8 +95,9 @@ public class MapActivity extends AppCompatActivity
         if (b != null) {
             double lat = b.getDouble("latitude");
             double lon = b.getDouble("longitude");
-            Log.d("MapActiity", lat + " : " + lon);
 
+            x = lat;
+            y = lon;
             CameraPosition position = CameraPosition.builder()
                     .target(new LatLng(lat, lon))
                     .zoom(15f)
@@ -127,21 +127,59 @@ public class MapActivity extends AppCompatActivity
     }
 
     private void initMarkers() {
-        ArrayList<EarthquakeItem> items = mapItemsm;
+        ArrayList<EQItem> items = latestMapItem;
 
         for (int ctr = 0; ctr < items.size(); ctr++) {
-            EarthquakeItem item = items.get(ctr);
+            EQItem item = items.get(ctr);
             LatLng position = new LatLng(item.getLatitude(), item.getLongitude());
 
-            Calendar calEQ = TimeHelper.setTime(item.getTimeStamp());
-            String snippet = "M" + item.getMagnitude() + " - " + TimeHelper.getTimeStamp(calEQ);
+            Calendar calEQ = TimeHelper2.setTime(item.getTimeStamp());
+            String snippet = "M" + item.getMagnitude() + " - " + TimeHelper2.getTimeStamp(calEQ);
 
-            map.addMarker(new MarkerOptions()
-                    .position(position)
-                    .title(item.getLocation())
-                    .snippet(snippet)
-                    .icon(BitmapDescriptorFactory.fromBitmap(markerCreator(item.getMagnitude())))
-            );
+
+            if (x == item.getLatitude() && item.getLongitude() == y) {
+                map.addMarker(new MarkerOptions()
+                        .position(position)
+                        .title(item.getLocation())
+                        .snippet(snippet)
+                        .icon(BitmapDescriptorFactory.fromBitmap(markerCreator(item.getMagnitude(), 0)))
+                ).showInfoWindow();
+            } else {
+                map.addMarker(new MarkerOptions()
+                        .position(position)
+                        .title(item.getLocation())
+                        .snippet(snippet)
+                        .icon(BitmapDescriptorFactory.fromBitmap(markerCreator(item.getMagnitude(), 0)))
+                );
+
+            }
+
+        }
+
+        items = forecastMapItem;
+        for (int ctr = 0; ctr < items.size(); ctr++) {
+            EQItem item = items.get(ctr);
+            LatLng position = new LatLng(item.getLatitude(), item.getLongitude());
+
+            Calendar calEQ = TimeHelper2.setTime(item.getTimeStamp());
+            String snippet = "M" + item.getMagnitude() + " - " + TimeHelper2.getTimeStamp(calEQ);
+
+            if (x == item.getLatitude() && item.getLongitude() == y) {
+                map.addMarker(new MarkerOptions()
+                        .position(position)
+                        .title(item.getLocation())
+                        .snippet(snippet)
+                        .icon(BitmapDescriptorFactory.fromBitmap(markerCreator(item.getMagnitude(), 1)))
+                ).showInfoWindow();
+            } else {
+                map.addMarker(new MarkerOptions()
+                        .position(position)
+                        .title(item.getLocation())
+                        .snippet(snippet)
+                        .icon(BitmapDescriptorFactory.fromBitmap(markerCreator(item.getMagnitude(), 1)))
+                );
+
+            }
         }
 
         if (latitude != 0 & LocationItem.longitude != 0) {
@@ -160,14 +198,22 @@ public class MapActivity extends AppCompatActivity
         }
     }
 
-    private Bitmap markerCreator(double magnitude) {
+    private Bitmap markerCreator(double magnitude, int type) {
         int size = (int) (magnitude + 25) * 8;
         BitmapDrawable bitmapdraw;
 
-        if (magnitude <= 4.0)
-            bitmapdraw = (BitmapDrawable) getResources().getDrawable(R.drawable.wave_moderate);
-        else
+//        if (magnitude <= 4.0)
+//            bitmapdraw = (BitmapDrawable) getResources().getDrawable(R.drawable.wave_moderate);
+//        else
+//
+
+        if (type == 0) {
             bitmapdraw = (BitmapDrawable) getResources().getDrawable(R.drawable.wave_heavy);
+        } else if (type == 1) {
+            bitmapdraw = (BitmapDrawable) getResources().getDrawable(R.drawable.wave_forecast);
+        } else {
+            bitmapdraw = (BitmapDrawable) getResources().getDrawable(R.drawable.wave_moderate);
+        }
         Bitmap b = bitmapdraw.getBitmap();
 
         Bitmap smallMarker = Bitmap.createScaledBitmap(b, size, size, false);

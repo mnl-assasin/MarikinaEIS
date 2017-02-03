@@ -117,6 +117,19 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             case R.id.mapit:
                 startActivity(new Intent(MainActivity.this, MapActivity.class));
                 break;
+
+            case R.id.about:
+                startActivity(new Intent(MainActivity.this, AboutActivity.class));
+                break;
+
+            case R.id.faq:
+                // PRECAUTION;
+                startActivity(new Intent(MainActivity.this, PrecautionActivity.class));
+                break;
+
+            case R.id.settings:
+                startActivity(new Intent(MainActivity.this, SettingsActivity.class));
+                break;
         }
 
 

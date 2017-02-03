@@ -22,15 +22,15 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.olfu.meis.R;
-import com.olfu.meis.model.EarthquakeItem;
+import com.olfu.meis.model.EarthquakeItem2;
 import com.olfu.meis.model.LocationItem;
-import com.olfu.meis.utils.TimeHelper;
+import com.olfu.meis.utils.TimeHelper2;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Calendar;
 
-import static com.olfu.meis.model.EarthquakeItem.getList;
+import static com.olfu.meis.model.EarthquakeItem2.getList;
 import static com.olfu.meis.model.LocationItem.latitude;
 import static com.olfu.meis.model.LocationItem.longitude;
 
@@ -111,14 +111,14 @@ public class FragmentMap extends SupportMapFragment
     }
 
     private void setupMarkers() {
-        ArrayList<EarthquakeItem> items = getList();
+        ArrayList<EarthquakeItem2> items = getList();
 
         for (int ctr = 0; ctr < items.size(); ctr++) {
-            EarthquakeItem item = items.get(ctr);
+            EarthquakeItem2 item = items.get(ctr);
             LatLng position = new LatLng(item.getLatitude(), item.getLongitude());
 
-            Calendar calEQ = TimeHelper.setTime(item.getTimeStamp());
-            String snippet = "M" + item.getMagnitude() + " - " + TimeHelper.getTimeStamp(calEQ);
+            Calendar calEQ = TimeHelper2.setTime(item.getTimeStamp());
+            String snippet = "M" + item.getMagnitude() + " - " + TimeHelper2.getTimeStamp(calEQ);
 
             getMap().addMarker(new MarkerOptions()
                     .position(position)

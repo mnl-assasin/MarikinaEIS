@@ -11,6 +11,42 @@
     <string name="loading">loading &#8320;</string>
     <string name="app_exit">Do you really want to exit?</string>
 
+
+    <string name="precaution_headline">What Should I Do Before, During, And After An Earthquake?</string>
+    <string name="before_heading">What to do Before an Earthquake</string>
+
+    <string name="before">• Make sure you have a fire extinguisher, first aid kit, a battery powered radio, a flashlight and extra batteries at home.</string>
+    <string name="before2">• Learn first aid.</string>
+    <string name="before3">• Learn how to turn off the gas, water and electricity.</string>
+    <string name="before4">• Make up a plan of where to meet your family after an earthquake.</string>
+    <string name="before5">• Don\'t leave heavy object on shelves</string>
+    <string name="before6">• Anchor heavy furniture, cupboards, and appliances to the walls or floor.</string>
+    <string name="before7">• Learn the earthquake plan at your school or workplace</string>
+
+    <string name="during_heading">What to do During an Earthquake</string>
+    <string name="during">• Stay calm! If you\'re indoors, stay inside. If you\'re outside, stay outside.</string>
+    <string name="during2">• If you\'re indoors, stand against a wall near the center of the building, stand in a doorway, or crawl under heavy furniture (a desk or table). Stay away from windows and outside doors.</string>
+    <string name="during3">• If you\'re outdoors, stay in the open away from power lines or anything that might fall. Stay away from buildings (stuff might fall off the building or the building could fall on you).</string>
+    <string name="during4">• Don\'t use matches, candles, or any flame. Broken gas lines and fire don\'t mix</string>
+    <string name="during5">• If you\'re in car, stop the car and stay inside the car until the earthquake stops.</string>
+    <string name="during6">• Don\'t use the elevators (they\'ll probably get stuck anyway)</string>
+
+    <string name="after_heading">What to do After an Earthquake</string>
+    <string name="after">• Check yourself and others for injuries. Provide first aid for anyone who needs it.</string>
+    <string name="after2">• Check water, gas, and electric lines for damage. If any are damaged, shut off the valves. Check for the smell of gas. If you smell it, open all the windows and doors. leave immediately, and report it to the authorities</string>
+    <string name="after3">• Turn on the radio. Don\'t use the phone unless it\'s an emergency.</string>
+    <string name="after4">• Stay out of damaged buildings.</string>
+    <string name="after5">• Be careful around broken glass and debris. Wear boots or sturdy shoes to keep from cutting your feet.</string>
+    <string name="after6">• Be careful of chimneys (they may fall on you).</string>
+    <string name="after7">• Stay away from beaches. Tsunamis and seiches sometimes hit after the ground has stopped shaking.</string>
+    <string name="after8">• Stay away from damaged areas.</string>
+    <string name="after9">• Expect aftershocks</string>
+
+    <string name="about_desc">Marikina EIS is a mobile application developed specifically for the citizens of the Municipality of Marikina.
+        Since Marikina City is one of the places covered by the West Valley Fault,
+        the developers decided to create a system wherein information dissemination is much easier.\n\nThe
+        application is developed by the CCS (College of Computer Studies) students from Our Lady of Fatima - Antipolo Campus. The students are as follows: Mel Austria, CJ Mercado, Roan Frago, and Lea Tapucar. The proponents aim for a better, easier and faster platform that would disseminate earthquake information to inform the citizens of Marikina as well as promoting self - awareness.
+    </string>
     <string-array name="location">
         <item>Around 1000 m</item>
         <item>Around 2000 m</item>

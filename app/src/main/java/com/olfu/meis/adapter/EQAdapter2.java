@@ -15,32 +15,29 @@ import android.widget.TextView;
 import com.olfu.meis.R;
 import com.olfu.meis.activity.MapActivity;
 import com.olfu.meis.builder.DialogBuilder;
-import com.olfu.meis.model.EQItem;
+import com.olfu.meis.model.EarthquakeItem2;
 import com.olfu.meis.utils.Distance;
-import com.olfu.meis.utils.TimeHelper;
 import com.olfu.meis.utils.TimeHelper2;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
 
 /**
- * Created by mykelneds on 03/02/2017.
+ * Created by mykelneds on 08/12/2016.
  */
 
-public class EQAdapter extends BaseAdapter {
+public class EQAdapter2 extends BaseAdapter {
 
-    private static final String TAG = "EQAdapter";
-
-    ArrayList<EQItem> items;
+    ArrayList<EarthquakeItem2> items;
     Context mContext;
     LayoutInflater inflater;
 
-    public EQAdapter(ArrayList<EQItem> items, Context mContext) {
+    public EQAdapter2(ArrayList<EarthquakeItem2> items, Context mContext) {
         this.items = items;
         this.mContext = mContext;
-
         inflater = LayoutInflater.from(mContext);
     }
 
@@ -66,21 +63,18 @@ public class EQAdapter extends BaseAdapter {
         double lon = 121.116714;
 
         final ViewHolder holder;
-
-        if (view != null)
+        if (view != null) {
             holder = (ViewHolder) view.getTag();
-        else {
+        } else {
             view = inflater.inflate(R.layout.item_latest, viewGroup, false);
             holder = new ViewHolder(view);
             view.setTag(holder);
         }
-        Log.d(TAG, "position: " + (i % 2));
-        if (i == 0)
-            holder.layoutContainer.setBackgroundColor(mContext.getResources().getColor(R.color.colorEQCell));
-        else if (i % 2 == 1)
+        Log.d("EQarth", "position: " + i);
+        if (i % 2 == 1)
             holder.layoutContainer.setBackgroundColor(mContext.getResources().getColor(R.color.colorEQCell2));
 
-        final EQItem item = items.get(i);
+        final EarthquakeItem2 item = items.get(i);
 
         holder.tvMagnitude.setText(String.valueOf(item.getMagnitude()));
         holder.tvLocation.setText(item.getLocation());
@@ -97,7 +91,9 @@ public class EQAdapter extends BaseAdapter {
 
         String AOE = "Depth: " + item.getDepth() + " Distance: " + String.format("%.2f", distance) + unit;
         holder.tvAOE.setText(AOE);
-        holder.tvTimestamp.setText(TimeHelper.getTimeStamp(item.getTimeStamp()));
+
+        Calendar calEQ = TimeHelper2.setTime(item.getTimeStamp());
+        holder.tvTimestamp.setText(TimeHelper2.getTimeStamp(calEQ));
 
         holder.layoutContainer.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -128,8 +124,70 @@ public class EQAdapter extends BaseAdapter {
             }
         });
 
+        // onClick
+//        holder.layoutContainer.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                if (item.isControlVisible()) {
+//                    holder.layoutControls.setVisibility(View.GONE);
+//                    item.setControlVisible(false);
+//                } else {
+//                    holder.layoutControls.setVisibility(View.VISIBLE);
+//                    item.setControlVisible(true);
+//                }
+//
+//            }
+//        });
+//
+//        holder.layoutMap.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                LocationItem.latitude = item.getLatitude();
+//                LocationItem.longitude = item.getLongitude();
+//                MainActivity2.pager.setCurrentItem(2);
+//            }
+//        });
+//
+//        holder.layoutDetails.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                /**
+//                 * title: location
+//                 * magnitude - Date;
+//                 *
+//                 * Description
+//                 * Location: Lat long;
+//                 * Depth:
+//                 * Review Status: Reviewed
+//                 * Source: Markina PDRRMO
+//                 */
+//
+//                String title = item.getLocation() + "\nM" + item.getMagnitude() + TimeHelper2.dateWithGMT(TimeHelper2.setTime(item.getTimeStamp()));
+//                String body = "Coordinates: " + item.getLatitude() + " \u00B0, " + item.getLongitude() + "\u00B0" + "\n" +
+//                        "Location: " + item.getDepth()
+//                        + "\nReview Status: Reviewed\nSource: Marikina PDRRMO";
+//
+//                AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
+//                builder.setTitle(title).setMessage(body).setPositiveButton("OK", new DialogInterface.OnClickListener() {
+//                    @Override
+//                    public void onClick(DialogInterface dialogInterface, int i) {
+//                        dialogInterface.dismiss();
+//                    }
+//                }).show();
+//            }
+//        });
+//
+//        holder.layoutShare.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//
+//            }
+//        });
+
+
         return view;
     }
+
 
     static class ViewHolder {
 

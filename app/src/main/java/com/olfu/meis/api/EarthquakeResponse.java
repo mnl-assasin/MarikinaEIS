@@ -6,7 +6,7 @@ import com.google.gson.annotations.SerializedName;
  * Created by mykelneds on 11/01/2017.
  */
 
-public class EarthquakeModel {
+public class EarthquakeResponse {
 
     @SerializedName("id")
     private int id;
@@ -33,7 +33,7 @@ public class EarthquakeModel {
     private double depth;
 
 
-    public EarthquakeModel(int id, double latitude, double longitude, String address, String dateTime, double magnitude, double depth) {
+    public EarthquakeResponse(int id, double latitude, double longitude, String address, String dateTime, double magnitude, double depth) {
         this.id = id;
         this.latitude = latitude;
         this.longitude = longitude;
