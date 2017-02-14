@@ -10,11 +10,12 @@ import android.content.SharedPreferences;
 public class EZSharedPreferences {
 
     private final static String USER_PREFERENCES = "MarikinaEIS";
-    
+
     public final static String KEY_MAGNITUDE = "Magnitude";
     public final static String KEY_DISTANCE = "Distance";
     public final static String KEY_TIME = "TimeFrame";
     public final static String KEY_SAVE_FILTER = "SaveFilterPref";
+    public final static String KEY_FTU = "FirstTimeUse";
 
     public static SharedPreferences getSharedPref(Context ctx) {
         return ctx.getSharedPreferences(USER_PREFERENCES, Context.MODE_PRIVATE);
@@ -30,8 +31,12 @@ public class EZSharedPreferences {
      * G E T T E R
      */
 
-    public static int getMagnitudePref(Context ctx){
+    public static int getMagnitudePref(Context ctx) {
         return getSharedPref(ctx).getInt(KEY_MAGNITUDE, 0);
+    }
+
+    public static boolean getFTU(Context ctx) {
+        return getSharedPref(ctx).getBoolean(KEY_FTU, true);
     }
 
 
@@ -39,5 +44,10 @@ public class EZSharedPreferences {
      * S E T T E R
      */
 
+    public static void setFTU(Context ctx) {
+        SharedPreferences.Editor editor = getSharedPref(ctx).edit();
+        editor.putBoolean(KEY_FTU, false);
+        editor.apply();
+    }
 
 }

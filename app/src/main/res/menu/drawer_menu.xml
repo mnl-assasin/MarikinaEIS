@@ -36,12 +36,15 @@
         <item
             android:id="@+id/lap"
             android:icon="@drawable/ic_permission"
-            android:title="Permissions" />
+            android:title="App Guide" />
 
         <item
-            android:id="@+id/settings"
-            android:icon="@drawable/ic_settings"
-            android:title="Settings" />
+            android:id="@+id/exit"
+            android:title="Exit" />
+        <!--<item-->
+            <!--android:id="@+id/settings"-->
+            <!--android:icon="@drawable/ic_settings"-->
+            <!--android:title="Settings" />-->
 
     </group>
 

@@ -15,9 +15,11 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.olfu.meis.R;
 import com.olfu.meis.builder.DialogBuilder;
+import com.olfu.meis.data.EZSharedPreferences;
 import com.olfu.meis.fragment.MainFragment;
 
 import butterknife.Bind;
@@ -43,6 +45,12 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
+
+
+        if (EZSharedPreferences.getFTU(MainActivity.this)) {
+            startActivity(new Intent(MainActivity.this, AppGuideActivity.class));
+        }
+
 
         initialized();
 //        testing();
@@ -127,9 +135,21 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 startActivity(new Intent(MainActivity.this, PrecautionActivity.class));
                 break;
 
-            case R.id.settings:
-                startActivity(new Intent(MainActivity.this, SettingsActivity.class));
+            case R.id.feedback:
+                sendFeedback();
                 break;
+
+            case R.id.lap:
+                startActivity(new Intent(MainActivity.this, AppGuideActivity.class));
+                break;
+
+            case R.id.exit:
+                exit();
+                break;
+
+//            case R.id.settings:
+//                startActivity(new Intent(MainActivity.this, SettingsActivity.class));
+//                break;
         }
 
 
@@ -143,12 +163,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         return true;
     }
 
-    @Override
-    public void onBackPressed() {
-        super.onBackPressed();
+    private void exit() {
 
         DialogBuilder.dialogBuilder(MainActivity.this, getString(R.string.app_name),
-                getString(R.string.app_exit), false, getString(R.string.ok), new DialogInterface.OnClickListener() {
+                getString(R.string.app_exit), false, "Exit", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         dialog.dismiss();
@@ -160,6 +178,28 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                         dialog.dismiss();
                     }
                 });
+    }
+
+    private void sendFeedback() {
+        Intent i = new Intent(Intent.ACTION_SEND);
+        i.setType("text/plain");
+        i.putExtra(Intent.EXTRA_EMAIL,
+                new String[]{"marikinaeis.developers@gmail.com"});
+        i.putExtra(Intent.EXTRA_SUBJECT, "Marikina EIS App Feedback");
+        i.putExtra(Intent.EXTRA_TEXT, "");
+        try {
+            startActivity(Intent.createChooser(i, "Send Feedback..."));
+        } catch (android.content.ActivityNotFoundException ex) {
+            Toast.makeText(MainActivity.this,
+                    "There are no email clients installed.",
+                    Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    @Override
+    public void onBackPressed() {
+//        super.onBackPressed();
+        exit();
 
     }
 

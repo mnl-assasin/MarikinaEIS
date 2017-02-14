@@ -1,6 +1,7 @@
 package com.olfu.meis.activity;
 
 import android.graphics.Bitmap;
+import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
 import android.location.Geocoder;
 import android.location.Location;
@@ -19,6 +20,7 @@ import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.gms.maps.model.PolylineOptions;
 import com.olfu.meis.R;
 import com.olfu.meis.model.EQItem;
 import com.olfu.meis.model.LocationItem;
@@ -30,6 +32,7 @@ import java.util.Calendar;
 
 import butterknife.ButterKnife;
 
+import static com.olfu.meis.model.EQItem.aftershockMapItem;
 import static com.olfu.meis.model.EQItem.forecastMapItem;
 import static com.olfu.meis.model.EQItem.latestMapItem;
 import static com.olfu.meis.model.LocationItem.latitude;
@@ -67,8 +70,21 @@ public class MapActivity extends AppCompatActivity
         ButterKnife.bind(this);
 
         createWidgets();
+        initFaultLine();
         initData();
         initMarkers();
+    }
+
+    private void initFaultLine() {
+        PolylineOptions line =
+                new PolylineOptions().add(new LatLng(14.614033, 121.074545),
+                        new LatLng(14.619664, 121.076777),
+                        new LatLng(14.633078, 121.084495),
+                        new LatLng(14.646718, 121.120441),
+                        new LatLng(14.660145, 121.126660))
+                        .width(8).color(Color.RED);
+
+        map.addPolyline(line);
     }
 
     private void createWidgets() {
@@ -182,6 +198,33 @@ public class MapActivity extends AppCompatActivity
             }
         }
 
+        items = aftershockMapItem;
+        for (int ctr = 0; ctr < items.size(); ctr++) {
+            EQItem item = items.get(ctr);
+            LatLng position = new LatLng(item.getLatitude(), item.getLongitude());
+
+            Calendar calEQ = TimeHelper2.setTime(item.getTimeStamp());
+            String snippet = "M" + item.getMagnitude() + " - " + TimeHelper2.getTimeStamp(calEQ);
+
+            if (x == item.getLatitude() && item.getLongitude() == y) {
+                map.addMarker(new MarkerOptions()
+                        .position(position)
+                        .title(item.getLocation())
+                        .snippet(snippet)
+                        .icon(BitmapDescriptorFactory.fromBitmap(markerCreator(item.getMagnitude(), 2)))
+                ).showInfoWindow();
+            } else {
+                map.addMarker(new MarkerOptions()
+                        .position(position)
+                        .title(item.getLocation())
+                        .snippet(snippet)
+                        .icon(BitmapDescriptorFactory.fromBitmap(markerCreator(item.getMagnitude(), 2)))
+                );
+
+            }
+        }
+
+
         if (latitude != 0 & LocationItem.longitude != 0) {
 //
             CameraPosition position = CameraPosition.builder()
@@ -199,9 +242,9 @@ public class MapActivity extends AppCompatActivity
     }
 
     private Bitmap markerCreator(double magnitude, int type) {
-        int size = (int) (magnitude + 25) * 8;
+//        int size = (int) (magnitude + 25) * 8;
         BitmapDrawable bitmapdraw;
-
+        int size = 75;
 //        if (magnitude <= 4.0)
 //            bitmapdraw = (BitmapDrawable) getResources().getDrawable(R.drawable.wave_moderate);
 //        else

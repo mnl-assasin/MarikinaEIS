@@ -4,8 +4,8 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 
-import com.olfu.meis.fragment.AftershockFragment;
 import com.olfu.meis.fragment.Dummy2Fragment;
+import com.olfu.meis.fragment.Dummy3Fragment;
 import com.olfu.meis.fragment.DummyFragment;
 
 
@@ -35,7 +35,8 @@ public class MainPagerAdapter extends FragmentStatePagerAdapter {
                 return new Dummy2Fragment();
 //                return new PredictionFragment();
             case 2:
-                return new AftershockFragment();
+                return new Dummy3Fragment();
+//                return new AftershockFragment();
         }
         return null;
     }

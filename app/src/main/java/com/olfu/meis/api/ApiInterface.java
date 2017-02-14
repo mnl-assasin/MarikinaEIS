@@ -16,4 +16,7 @@ public interface ApiInterface {
 
     @GET("forecasts")
     Call<List<EarthquakeResponse>> getForecast();
+
+    @GET("aftershocks")
+    Call<List<EarthquakeResponse>> getAftershocks();
 }
